@@ -9,11 +9,10 @@ Summary: takes a trained xgboost model and returns the trees as a list of pandas
 def get_xgboost_trees(xgboost_model):
 
     trees = xgboost_model.get_dump()
-    print trees
     trees_list = []
-    #print trees
+
     for tree in trees:
-        #print(tree)
+
         tree_text = tree.split(":")
 
         tree_struct = []
@@ -22,7 +21,7 @@ def get_xgboost_trees(xgboost_model):
         if len(tree_text) > 2:
             for level in tree_text:
                 level_text = level.split(" ")
-                #print(level_text)
+
                 if len(level_text) > 1:
                     level_tokens = level_text[1].split(",")
                     a = level_text[0]
@@ -50,7 +49,7 @@ def get_xgboost_trees(xgboost_model):
 
                     #
             tree_struct = pd.DataFrame(tree_struct)
-            # print(tree_struct)
+
             tree_struct = tree_struct.set_index(tree_struct.level_id.values)
             trees_list.append(tree_struct)
 
