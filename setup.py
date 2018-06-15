@@ -41,7 +41,7 @@ setup(
        'numpy >= 1.12.1'
     ],
     author="Mihaela Mares",
-    author_email="mmihaela.andreea.mares@gmail.com",
+    author_email="mihaela.andreea.mares@gmail.com",
     keywords='machine_learning data_science AI ML feature_processing',  # Optional
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
     extras_require={  # Optional
