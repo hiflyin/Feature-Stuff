@@ -23,11 +23,11 @@ setup(
     description='Feature processing functions for machine learning and data science.',  # Required
     long_description=long_description,  # Optional
     long_description_content_type='text/markdown',  # Optional (see note above)
-    url='https://github.com/pypa/feature_processing',  # Optional
+    url='https://github.com/hiflyin/Advanced-Feature-Processing-Lib',  # Optional
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'Topic :: Machine Learning :: Data Science',
+        'Topic :: Machine Learning',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
