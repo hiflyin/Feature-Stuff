@@ -60,7 +60,7 @@ def test_add_group_values():
     data = add_group_values(data, ["x0"], "x1", "x1_sum", sum, agg_type='float32')
     assert data.x1_sum.values.tolist() == [2,4,2,4]
 
-def test_targetEncoding():#(df, ref_df, categ_col, y_col, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1):
+def test_targetEncoding():
 
     train_data = createDF([[0, 1, 0, 1], range(4)])
     test_data = createDF([[1, 0, 0, 1], range(4)])
@@ -68,7 +68,6 @@ def test_targetEncoding():#(df, ref_df, categ_col, y_col, smoothing_func=exponen
 
     test_data = targetEncoding(test_data, train_data, "x0", target, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1)
 
-    #print train_data.groupby(["x0"])[target].agg(["mean"])
     assert test_data.x0_bayes_mean.values.tolist()==[1.7310585786300048, 1.0, 1.0, 1.7310585786300048]
 
 def test_add_dummies_selected_cat():

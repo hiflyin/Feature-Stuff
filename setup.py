@@ -40,9 +40,9 @@ setup(
        'pandas >= 0.19.2',
        'numpy >= 1.12.1'
     ],
-    author="Me",
-    author_email="me@myemail.com",
-    keywords='machine_learning data_science, AI',  # Optional
+    author="Mihaela Mares",
+    author_email="mmihaela.andreea.mares@gmail.com",
+    keywords='machine_learning data_science AI ML feature_processing',  # Optional
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
     extras_require={  # Optional
         'dev': ['check-manifest'],
