@@ -12,4 +12,6 @@ def generate_mock_binary_tree():
 
 def test_get_paths_from_tree():
 
-    assert graph_search_algorithms.get_paths_from_tree(generate_mock_binary_tree())==[['choose_park', 'is_sunny'], ['choose_movie', 'is_sunny']]
+    assert sorted(graph_search_algorithms.get_paths_from_tree(generate_mock_binary_tree()))==\
+           sorted([['choose_park', 'is_sunny'], ['choose_movie', 'is_sunny']])
+
