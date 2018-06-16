@@ -7,21 +7,19 @@
 <tr>
   <td>Latest Release</td>
   <td>
-    <a href="https://pypi.org/project/feature-stuff/"> see on pypi.org
-    </a>
+    <a href="https://pypi.org/project/feature-stuff/"> see on pypi.org</a>
   </td>
 </tr>
 <tr>
   <td>Package Status</td>
   <td>
-		<a href="https://pypi.org/project/feature-stuff/"></a> see on pypi.org
+		<a href="https://pypi.org/project/feature-stuff/">see on pypi.org</a>
     </td>
 </tr>
 <tr>
   <td>License</td>
   <td>
-    <a href="https://github.com/hiflyin/Feature-Stuff/blob/master/LICENSE">  see on github
-    </a>
+    <a href="https://github.com/hiflyin/Feature-Stuff/blob/master/LICENSE">  see on github</a>
 </td>
 </tr>
 <tr>
