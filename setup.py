@@ -18,16 +18,16 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='feature_processing',  # Required
-    version='1.1.0.dev1',  # Required
-    description='Feature processing functions for machine learning and data science.',  # Required
+    name='feature_stuff',  # Required
+    version='0.0.dev4',  # Required
+    description='Feature extraction, processing and interpretation algorithms and functions for machine learning and data science.',  # Required
     long_description=long_description,  # Optional
     long_description_content_type='text/markdown',  # Optional (see note above)
-    url='https://github.com/hiflyin/Advanced-Feature-Processing-Lib',  # Optional
+    url='https://github.com/hiflyin/Advanced-Feature-Stuff-Lib',  # Optional
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'Topic :: Machine Learning',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
@@ -38,11 +38,12 @@ setup(
     ],
     install_requires=[
        'pandas >= 0.19.2',
-       'numpy >= 1.12.1'
+       'numpy >= 1.12.1',
+       'scikit-learn >= 0.18'
     ],
     author="Mihaela Mares",
     author_email="mihaela.andreea.mares@gmail.com",
-    keywords='machine_learning data_science AI ML feature_processing',  # Optional
+    keywords='machine_learning data_science AI ML feature_extraction',  # Optional
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
     extras_require={  # Optional
         'dev': ['check-manifest'],

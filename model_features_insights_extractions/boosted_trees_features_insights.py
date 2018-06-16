@@ -2,11 +2,12 @@ import pandas as pd
 from graph_search_algorithms import *
 from array_algorithms import *
 
-'''
-Summary: takes a trained xgboost model and returns the trees as a list of pandas dfs
-'''
+
 
 def get_xgboost_trees(xgboost_model):
+    '''
+    Summary: takes a trained xgboost model and returns the trees as a list of pandas dfs
+    '''
 
     trees = xgboost_model.get_dump()
     trees_list = []
@@ -56,10 +57,11 @@ def get_xgboost_trees(xgboost_model):
     return trees_list
 
 
-'''
-Summary: takes a trained xgboost model and returns the trees as a list of pandas dfs
-'''
+
 
 def get_xgboost_interactions(xgboost_model):
+    '''
+    Summary: takes a trained xgboost model and returns the trees as a list of pandas dfs
+    '''
 
     return [ x for x in get_paths_from_trees(get_xgboost_trees(xgboost_model)) if len(x)>1]

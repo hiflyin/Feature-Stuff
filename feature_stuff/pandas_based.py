@@ -6,20 +6,21 @@ import gc
 import graph_search_algorithms
 import model_features_insights_extractions
 
-'''
-Summary:  generic function for adding interaction features to a data frame either by passing them as a list or
-    by passing an a boosted trees model to extract the interactions from.
 
-Inputs:
-    df: a pandas dataframe
-    model: boosted trees model (currently xgboost supported only). Can be None in which case the interactions have to be provided
-    interactions: list in which each element is a list of features/columns in df, default: None
-
-Output: df containing the group values added to it
-
-TO DO: check if interactions has to by np array rather than list
-'''
 def addInteractions(df, model = None, interactions = None):
+    '''
+    Summary:  generic function for adding interaction features to a data frame either by passing them as a list or
+        by passing an a boosted trees model to extract the interactions from.
+
+    Inputs:
+        df: a pandas dataframe
+        model: boosted trees model (currently xgboost supported only). Can be None in which case the interactions have to be provided
+        interactions: list in which each element is a list of features/columns in df, default: None
+
+    Output: df containing the group values added to it
+
+    TO DO: check if interactions has to by np array rather than list
+    '''
 
     if interactions is None:
         interactions = graph_search_algorithms.get_paths_from_trees(model_features_insights_extractions.get_xgboost_trees(model))
@@ -40,20 +41,21 @@ def addInteractions(df, model = None, interactions = None):
 
     return df
 
-'''
-Summary:  generic and memory efficient enrichment of features dataframe with group values
 
-Inputs:
-    df: a pandas dataframe
-    group_cols: columns to group by
-    counted: column to compute the aggregate/ group values  on
-    agg_name: name of the new function
-    agg_function: aggregate function name
-    agg_type: default is float32
-
-Output: df containing the group values added to it
-'''
 def add_group_values( df, group_cols, counted, agg_name, agg_function,  agg_type='float32'):
+    '''
+    Summary:  generic and memory efficient enrichment of features dataframe with group values
+
+    Inputs:
+        df: a pandas dataframe
+        group_cols: columns to group by
+        counted: column to compute the aggregate/ group values  on
+        agg_name: name of the new function
+        agg_function: aggregate function name
+        agg_type: default is float32
+
+    Output: df containing the group values added to it
+    '''
 
     gp = df[group_cols+[counted]].groupby(group_cols)[counted].apply(agg_function).reset_index().rename(columns={counted:agg_name})
     df = df.merge(gp, on=group_cols, how='left')
@@ -62,44 +64,47 @@ def add_group_values( df, group_cols, counted, agg_name, agg_function,  agg_type
     gc.collect()
     return(df)
 
-'''
-Inputs:
-    counts: a pandas series as counts of number of samples falling in each category
-    prior_weight: a prior weight to put on each category
 
-Output: a pandas series of weights such that each category is weighted as a mean between the prior weight and the
-    number of samples  we have in the respective category. The more samples we have in this category the larger the
-    weight will be.
-'''
 def meanPriorSmoothing(counts, prior_weight=1):
+    '''
+    Inputs:
+        counts: a pandas series as counts of number of samples falling in each category
+        prior_weight: a prior weight to put on each category
+
+    Output: a pandas series of weights such that each category is weighted as a mean between the prior weight and the
+        number of samples  we have in the respective category. The more samples we have in this category the larger the
+        weight will be.
+    '''
     return counts / (counts + prior_weight)
 
-'''
-Inputs:
-    counts: a pandas series as counts of number of samples falling in each category
-    prior_weight: a prior weight to put on each category
 
-Output: a pandas series of weights such that each category is weighted as a sigmoid of the number of samples  we have
-    in the respective category minus the prior weight. The more samples we have in this category the larger the
-    weight will be.
-'''
 def exponentialPriorSmoothing(counts, prior_weight=1):
+    '''
+    Inputs:
+        counts: a pandas series as counts of number of samples falling in each category
+        prior_weight: a prior weight to put on each category
+
+    Output: a pandas series of weights such that each category is weighted as a sigmoid of the number of samples  we have
+        in the respective category minus the prior weight. The more samples we have in this category the larger the
+        weight will be.
+    '''
     return 1 / (1 + np.exp(-(counts - prior_weight)))
 
-'''
-Inputs:
-    df: a pandas dataframe containing the column for which to calculate target encoding (categ_col)
-    ref_df: a pandas dataframe containing the column for which to calculate target encoding and the target variable (y_col)
-    categ_col: the name of the categorical column for which to calculate target encoding
-    y_col: the name of the target column, or target variable to predict
-    smoothing_func: the name of the function to be used for calculating the weights of the corresponding target variable
-        value inside ref_df. Default: exponentialPriorSmoothing.
-    aggr_func: the statistic used to aggregate the target variable values inside each category of the categ_col
-    smoothing_prior_weight: a prior weight to put on each category. Default 1.
 
-Output: df containing a new column called <categ_col + "_bayes_" + aggr_func> containing the encodings of categ_col
-'''
 def targetEncoding(df, ref_df, categ_col, y_col, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1):
+    '''
+    Inputs:
+        df: a pandas dataframe containing the column for which to calculate target encoding (categ_col)
+        ref_df: a pandas dataframe containing the column for which to calculate target encoding and the target variable (y_col)
+        categ_col: the name of the categorical column for which to calculate target encoding
+        y_col: the name of the target column, or target variable to predict
+        smoothing_func: the name of the function to be used for calculating the weights of the corresponding target variable
+            value inside ref_df. Default: exponentialPriorSmoothing.
+        aggr_func: the statistic used to aggregate the target variable values inside each category of the categ_col
+        smoothing_prior_weight: a prior weight to put on each category. Default 1.
+
+    Output: df containing a new column called <categ_col + "_bayes_" + aggr_func> containing the encodings of categ_col
+    '''
 
     ref_df["y_col"] = y_col
 
@@ -119,20 +124,21 @@ def targetEncoding(df, ref_df, categ_col, y_col, smoothing_func=exponentialPrior
 
     return(df)
 
-'''
-Inputs:
-    df: a pandas dataframe containing the column for which to calculate target encoding (categ_col) and the target variable (y_col)
-    categ_cols: a list or array with the the names of the categorical columns for which to calculate target encoding
-    y_col: the name of the target column, or target variable to predict
-    cv_folds: a list with fold pairs for cross-val target encoding
-    smoothing_func: the name of the function to be used for calculating the weights of the corresponding target variable
-        value inside ref_df. Default: exponentialPriorSmoothing.
-    aggr_func: the statistic used to aggregate the target variable values inside each category of the categ_col
-    smoothing_prior_weight: a prior weight to put on each category. Default 1.
 
-Output: df containing a new column called <categ_col + "_bayes_" + aggr_func> containing the encodings of categ_col
-'''
 def cv_targetEncoding(df, categ_cols, y_col, cv_folds, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1):
+    '''
+    Inputs:
+        df: a pandas dataframe containing the column for which to calculate target encoding (categ_col) and the target variable (y_col)
+        categ_cols: a list or array with the the names of the categorical columns for which to calculate target encoding
+        y_col: the name of the target column, or target variable to predict
+        cv_folds: a list with fold pairs for cross-val target encoding
+        smoothing_func: the name of the function to be used for calculating the weights of the corresponding target variable
+            value inside ref_df. Default: exponentialPriorSmoothing.
+        aggr_func: the statistic used to aggregate the target variable values inside each category of the categ_col
+        smoothing_prior_weight: a prior weight to put on each category. Default 1.
+
+    Output: df containing a new column called <categ_col + "_bayes_" + aggr_func> containing the encodings of categ_col
+    '''
 
 
     df_parts = []
@@ -153,13 +159,14 @@ def cv_targetEncoding(df, categ_cols, y_col, cv_folds, smoothing_func=exponentia
 
     return(df)
 
-'''
-Inputs:
-    df: a pandas dataframe containing the column for which to calculate target encoding (categ_col)
-    cols: all columns' names for which to do label encoding . If is None (default) then all object columns are taken.
-Output: df with cols replaced the coresponding label encodings while maintaining all existing None values at their positions.
-'''
+
 def encode_labels(df, cols = None):
+    '''
+    Inputs:
+        df: a pandas dataframe containing the column for which to calculate target encoding (categ_col)
+        cols: all columns' names for which to do label encoding . If is None (default) then all object columns are taken.
+    Output: df with cols replaced the coresponding label encodings while maintaining all existing None values at their positions.
+    '''
 
     le = LabelEncoder()
     for col in cols:
@@ -175,17 +182,18 @@ def encode_labels(df, cols = None):
 
     return(df)
 
-'''
-Inputs:
-    df: a pandas Dataframe containing the columns to add dummies for.
-    cols: a list or array of the names of the columns to dummy. If is None (default) then all object columns are taken.
-    drop: if the categorical columns are to be dropped after adding the dummies. Default = True.
 
-Output: the dataframe with the added dummies. NaNs will be ignored rather than considered a distinct category.
-
-TO DO: TypeErrors?
-'''
 def add_dummies(df, cols = None, drop = True):
+    '''
+    Inputs:
+        df: a pandas Dataframe containing the columns to add dummies for.
+        cols: a list or array of the names of the columns to dummy. If is None (default) then all object columns are taken.
+        drop: if the categorical columns are to be dropped after adding the dummies. Default = True.
+
+    Output: the dataframe with the added dummies. NaNs will be ignored rather than considered a distinct category.
+
+    TO DO: TypeErrors?
+    '''
 
     if cols is None:
         cols = [col for col in df.columns if df[col].dtype == 'object']
@@ -200,16 +208,17 @@ def add_dummies(df, cols = None, drop = True):
     gc.collect()
     return(df)
 
-'''
-Inputs:
-    col: the name of column to be considered.
-    df: a pandas Dataframe containing the columns to add dummies for.
-    categs: the names of the categories in col to add dummies for.
-    drop: if the categorical columns are to be dropped after adding the dummies. Default = True.
 
-Output: the dataframe with the added dummies. NaNs will be ignored rather than considered a distinct category.
-'''
 def add_dummies_selected_cat(col, df, categs, drop = True):
+    '''
+    Inputs:
+        col: the name of column to be considered.
+        df: a pandas Dataframe containing the columns to add dummies for.
+        categs: the names of the categories in col to add dummies for.
+        drop: if the categorical columns are to be dropped after adding the dummies. Default = True.
+
+    Output: the dataframe with the added dummies. NaNs will be ignored rather than considered a distinct category.
+    '''
 
     aux = df[col]
     df.loc[~df[col].isin(categs), col] = None
