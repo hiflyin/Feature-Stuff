@@ -7,27 +7,27 @@
 <tr>
   <td>Latest Release</td>
   <td>
-    <a href="https://pypi.org/project/feature-stuff/">
+    <a href="https://pypi.org/project/feature-stuff/"> see on pypi.org
     </a>
   </td>
 </tr>
 <tr>
   <td>Package Status</td>
   <td>
-		<a href="https://pypi.org/project/feature-stuff/"></a>
+		<a href="https://pypi.org/project/feature-stuff/"></a> see on pypi.org
     </td>
 </tr>
 <tr>
   <td>License</td>
   <td>
-    <a href="https://github.com/hiflyin/Feature-Stuff/blob/master/LICENSE">
+    <a href="https://github.com/hiflyin/Feature-Stuff/blob/master/LICENSE">  see on github
     </a>
 </td>
 </tr>
 <tr>
   <td>Build Status</td>
   <td>
-    <a href="https://travis-ci.org/hiflyin/Feature-Stuff/">
+    <a href="https://travis-ci.org/hiflyin/Feature-Stuff/"> see on travis
     </a>
   </td>
 </tr>
@@ -78,14 +78,14 @@ mode](https://pip.pypa.io/en/latest/reference/pip_install.html#editable-installs
 
 ```sh
 pip install -e .
-``
+```
 
 ## How to use it
 
 Example on extracting interactions form tree based models and adding
 them as new features to your dataset.
 
-```sh
+```python
 import feature_stuff as fs
 import pandas as pd
 import xgboost as xgb
@@ -117,8 +117,7 @@ print data
 from feature_stuff import model_features_insights_extractions as insights
 print insights.get_xgboost_interactions(model)
 [['x0', 'x1']]
-
-``
+```
 
 ## Contributing to feature-stuff
 
