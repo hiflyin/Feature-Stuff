@@ -1,10 +1,9 @@
 
 -----------------
 
-# feature_stuff: a python algorithms distribution for advanced feature extraction, processing and interpretation in machine learning, data science, AI.
+# feature_stuff: a python machine learning library for advanced feature extraction, processing and interpretation.
 
 <table>
-
 <tr>
   <td>Latest Release</td>
   <td>
@@ -12,14 +11,12 @@
     </a>
   </td>
 </tr>
-
 <tr>
   <td>Package Status</td>
   <td>
 		<a href="https://pypi.org/project/feature-stuff/"></a>
     </td>
 </tr>
-
 <tr>
   <td>License</td>
   <td>
@@ -27,7 +24,6 @@
     </a>
 </td>
 </tr>
-
 <tr>
   <td>Build Status</td>
   <td>
