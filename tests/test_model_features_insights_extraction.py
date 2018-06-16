@@ -30,4 +30,4 @@ def test_get_xgboost_trees():
     # should contain at least one of the binary variables
     assert "x0" in trees[0].var_name.values or "x2" in trees[0].var_name.values
     interactions = graph_search_algorithms.get_paths_from_trees(trees)
-    assert interactions ==[['x1'], ['x0', 'x1']] or interactions == [['x1'], ['x0', 'x1']]
+    assert interactions == sorted([['x1'], ['x0', 'x1']]) or interactions == sorted([['x1'], ['x0', 'x1']])

@@ -52,4 +52,4 @@ def get_paths_from_trees(trees_list):
 
         paths = paths + get_paths_from_tree(tree_struct)
 
-    return array_algorithms.removeDuplicateRows(paths)
+    return sorted(array_algorithms.removeDuplicateRows(paths))
