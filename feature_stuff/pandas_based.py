@@ -105,20 +105,26 @@ def targetEncoding(df, ref_df, categ_col, y_col, smoothing_func=exponentialPrior
 
     Output: df containing a new column called <categ_col + "_bayes_" + aggr_func> containing the encodings of categ_col
     '''
+    y_col_name = "y_" + max([len(x) for x in df.columns.values])*"x"
+    all_group_col_name = "g_" + max([len(x) for x in df.columns.values])*"x"
 
-    ref_df["y_col"] = y_col
+    ref_df[y_col_name] = y_col
+    ref_df[all_group_col_name] = 0
 
-    df_grouped = ref_df.groupby([categ_col])["y_col"].agg([aggr_func, "count"]).reset_index()
+
+    df_grouped = ref_df.groupby([categ_col])[y_col_name].agg([aggr_func, "count"]).reset_index()
 
     smoothing = smoothing_prior_weight
     if smoothing_func != None:
         smoothing = smoothing_func(df_grouped["count"], smoothing_prior_weight)
+    print smoothing
+    df_grouped[categ_col + "_bayes_" + aggr_func] = df_grouped[aggr_func] * smoothing + \
+                                                    ref_df.groupby(all_group_col_name)[y_col_name].agg([aggr_func]).values[0][0] * (1 - smoothing)
 
-    df_grouped[categ_col + "_bayes_" + aggr_func] = df_grouped[aggr_func] * smoothing + sum(y_col)/len(y_col) * (1 - smoothing)
     df_grouped.drop(["count", aggr_func], 1, inplace=True)
     df = pd.merge(df, df_grouped, how='left', on=[categ_col])
 
-    ref_df.drop("y_col", 1, inplace=True)
+    ref_df.drop([y_col_name,all_group_col_name], 1, inplace=True)
     del df_grouped
     gc.collect()
 
@@ -130,8 +136,8 @@ def cv_targetEncoding(df, categ_cols, y_col, cv_folds, smoothing_func=exponentia
     Inputs:
         df: a pandas dataframe containing the column for which to calculate target encoding (categ_col) and the target variable (y_col)
         categ_cols: a list or array with the the names of the categorical columns for which to calculate target encoding
-        y_col: the name of the target column, or target variable to predict
-        cv_folds: a list with fold pairs for cross-val target encoding
+        y_col: a numpy array of the target variable to predict
+        cv_folds: a list with fold pairs as tuples of numpy arrays for cross-val target encoding
         smoothing_func: the name of the function to be used for calculating the weights of the corresponding target variable
             value inside ref_df. Default: exponentialPriorSmoothing.
         aggr_func: the statistic used to aggregate the target variable values inside each category of the categ_col
@@ -140,19 +146,21 @@ def cv_targetEncoding(df, categ_cols, y_col, cv_folds, smoothing_func=exponentia
     Output: df containing a new column called <categ_col + "_bayes_" + aggr_func> containing the encodings of categ_col
     '''
 
-
     df_parts = []
     fold_id = 0
+
     for fold0, fold1 in cv_folds:
 
         te_df = df.loc[fold1, :]
         ref_df = df.loc[fold0, :]
         for col in categ_cols:
-            te_df = targetEncoding(te_df, ref_df, col, y_col, smoothing_func=smoothing_func, aggr_func=aggr_func, smoothing_prior_weight=smoothing_prior_weight)
+            te_df = targetEncoding(te_df, ref_df, col, y_col[fold0], smoothing_func=smoothing_func, aggr_func=aggr_func,
+                                   smoothing_prior_weight=smoothing_prior_weight)
+            te_df.index = fold1
         df_parts.append(te_df)
         fold_id += 1
 
-    df = pd.concat(df_parts)
+    df = pd.concat(df_parts).loc[df.index.values,:]
 
     del df_parts
     gc.collect()

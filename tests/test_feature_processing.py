@@ -68,13 +68,38 @@ def test_targetEncoding():
 
     test_data = targetEncoding(test_data, train_data, "x0", target, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1)
 
-    assert test_data.x0_bayes_mean.values.tolist()==[1.7310585786300048, 1.0, 1.0, 1.7310585786300048]
+    assert test_data.x0_bayes_mean.values.tolist()==[1.8655292893150024, 1.1344707106849976, 1.1344707106849976, 1.8655292893150024]
 
-def test_add_dummies_selected_cat():
+    train_data = createDF([[1, 1, 0, 1], range(4)])
+    test_data = createDF([[0,0,0,0], range(4)])
+    target = range(4)
+
+    test_data = targetEncoding(test_data, train_data, "x0", target, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1)
+    expected_smoothing = .5
+    expected_group_mean = 2
+    expected_target_mean = 1.5
+    expected_val = expected_smoothing*expected_group_mean + expected_target_mean*(1-expected_smoothing)
+    assert test_data.x0_bayes_mean.values.tolist()==[expected_val for _ in range(4)]
+
+
+
+def _test_cv_targetEncoding():
+
+    train_data = createDF([[0, 1, 0, 1], range(4)])
+    target = np.array(range(4))
+    print train_data
+    cv_folds = [(np.array([0,1]), np.array([2,3])), (np.array([2,3]), np.array([0,1]))]
+
+    train_data = cv_targetEncoding(train_data, ["x0"], target, cv_folds)
+
+    print train_data.x0_bayes_mean.values.tolist()
+    assert train_data.x0_bayes_mean.values.tolist()==[2.25, 2.75, 0.25, 0.75]
+
+def test_add_dummies():
 
     df = generate_mock_data()
     df = df.loc[df['cat2'].isin(['a', 'b'])]
-    result = add_dummies(["cat2"], df)
+    result = add_dummies(df, ["cat2"])
 
     assert result.shape[0] == df.shape[0]
     assert result["cat2_a"].values.tolist() == [1, 1, 0, 0]
