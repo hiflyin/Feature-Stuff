@@ -87,7 +87,7 @@ for extracting, processing and interpreting features:
 
 
 
-## Installation 
+## Installation
 
 Binary installers for the latest released version are available at the [Python
 package index](https://pypi.org/project/feature-stuff) .
@@ -126,7 +126,7 @@ pip install -e .
 
 ## How to use it
 
-< see the description of each function/ algorithm >
+< see the attached API of each function/ algorithm >
 
 Example on extracting interactions form tree based models and adding
 them as new features to your dataset.

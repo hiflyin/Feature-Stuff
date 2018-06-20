@@ -1,29 +1,20 @@
-"""
-A setuptools based setup module.
 
-See:
-https://packaging.python.org/en/latest/distributing.html
-
-"""
-
-# Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
 
-# Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='feature_stuff',  # Required
-    version='0.0.dev4',  # Required
-    description='Feature extraction, processing and interpretation algorithms and functions for machine learning and data science.',  # Required
-    long_description=long_description,  # Optional
-    long_description_content_type='text/markdown',  # Optional (see note above)
-    url='https://github.com/hiflyin/Advanced-Feature-Stuff-Lib',  # Optional
+    name='feature_stuff',
+    version='0.0.dev5',
+    description='Feature extraction, processing and interpretation algorithms and functions for machine learning and data science.',  
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    url='https://github.com/hiflyin/Advanced-Feature-Stuff-Lib',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -45,8 +36,8 @@ setup(
     ],
     author="Mihaela Mares",
     author_email="mihaela.andreea.mares@gmail.com",
-    keywords='machine_learning data_science AI ML feature_extraction',  # Optional
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
+    keywords='machine_learning data_science AI ML feature_extraction',
+    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     extras_require={  # Optional
         'dev': ['check-manifest'],
         'test': ['coverage'],

@@ -3,7 +3,6 @@ from graph_search_algorithms import *
 from array_algorithms import *
 
 
-
 def get_xgboost_trees(xgboost_model):
     '''
     Summary: takes a trained xgboost model and returns the trees as a list of pandas dfs
@@ -55,8 +54,6 @@ def get_xgboost_trees(xgboost_model):
             trees_list.append(tree_struct)
 
     return trees_list
-
-
 
 
 def get_xgboost_interactions(xgboost_model):
