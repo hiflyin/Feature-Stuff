@@ -36,10 +36,54 @@
 ## What is it
 
 **feature_stuff** is a Python package providing fast and flexible algorithms and functions
-for extracting, processing and interpreting features. It includes functions like feature interaction extraction
-from from boosted decision tree based models, generic target encoding and memory efficient enrichment of features
-dataframe with group values.
+for extracting, processing and interpreting features:
 
+**Numeric feature extraction**
+<table>
+<tr>
+  <td>add_interactions</td>
+  <td>
+    generic function for adding interaction features to a data frame either by passing them as a list or
+        by passing a boosted trees model to extract the interactions from.
+  </td>
+</tr>
+<tr>
+  <td>target_encoding</td>
+  <td>
+		target encoding of a feature column using exponential prior smoothing or mean prior smoothing
+    </td>
+</tr>
+<tr>
+  <td>cv_target_encoding</td>
+  <td>
+    target encoding of a feature column taking cross-validation folds as input
+</td>
+</tr>
+<tr>
+  <td>add_knn_values</td>
+  <td>
+    creates a new feature with the K-nearest-neighbours of the values of a given feature
+  </td>
+</tr>
+<tr>
+  <td>add_group_values</td>
+  <td>
+    generic and memory efficient enrichment of features dataframe with group values
+  </td>
+</tr>
+</table>
+
+**Model feature insights extraction**
+<table>
+<tr>
+  <td>get_xgboost_interactions</td>
+  <td>
+    takes a trained xgboost model and returns a list of interactions between features, to the order of maximum
+        depth of all trees.
+  </td>
+</tr>
+<tr>
+</table
 
 ## How to get it
 
@@ -80,6 +124,8 @@ pip install -e .
 
 ## How to use it
 
+< see the description of each function/ algorithm >
+
 Example on extracting interactions form tree based models and adding
 them as new features to your dataset.
 
@@ -115,6 +161,7 @@ print data
 from feature_stuff import model_features_insights_extractions as insights
 print insights.get_xgboost_interactions(model)
 [['x0', 'x1']]
+
 ```
 
 ## Contributing to feature-stuff

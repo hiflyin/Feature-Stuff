@@ -61,7 +61,8 @@ def get_xgboost_trees(xgboost_model):
 
 def get_xgboost_interactions(xgboost_model):
     '''
-    Summary: takes a trained xgboost model and returns the trees as a list of pandas dfs
+    Summary: takes a trained xgboost model and returns a list of interactions between features, to the order of maximum
+        depth of all trees.
     '''
 
     return [ x for x in get_paths_from_trees(get_xgboost_trees(xgboost_model)) if len(x)>1]

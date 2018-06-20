@@ -1,6 +1,6 @@
 
 
-from feature_stuff.pandas_based import *
+from feature_stuff import *
 from model_features_insights_extractions import *
 import xgboost as xgb
 
@@ -41,7 +41,7 @@ def test_addInteractions():
     data = createDF([[0,1,0,1], range(4), [1,0,1,0]])
     target = data.x0 * data.x1 + data.x2*data.x1
     model = xgb.train({'max_depth': 4, "seed": 123}, xgb.DMatrix(data, label=target), num_boost_round=2)
-    data = addInteractions(data, model)
+    data = add_interactions(data, model)
 
     # either at least one of these interactions must have been discovered
     assert data.inter_0.values.tolist() == [x for x in data.x0 * data.x1] or data.inter_0.values.tolist() == [x for x in
@@ -49,7 +49,7 @@ def test_addInteractions():
 
     interactions = get_xgboost_interactions(model)
     data = createDF([[0, 1, 0, 1], range(4), [1, 0, 1, 0]])
-    data = addInteractions(data, model, interactions=interactions)
+    data = add_interactions(data, model, interactions=interactions)
 
     # either at least one of these interactions must have been discovered
     assert data.inter_0.values.tolist() == [x for x in data.x0 * data.x1] or data.inter_0.values.tolist() == [x for x in data.x2 * data.x1]
@@ -66,7 +66,7 @@ def test_targetEncoding():
     test_data = createDF([[1, 0, 0, 1], range(4)])
     target = range(4)
 
-    test_data = targetEncoding(test_data, train_data, "x0", target, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1)
+    test_data = target_encoding(test_data, train_data, "x0", target, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1)
 
     assert test_data.x0_bayes_mean.values.tolist()==[1.8655292893150024, 1.1344707106849976, 1.1344707106849976, 1.8655292893150024]
 
@@ -74,7 +74,7 @@ def test_targetEncoding():
     test_data = createDF([[0,0,0,0], range(4)])
     target = range(4)
 
-    test_data = targetEncoding(test_data, train_data, "x0", target, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1)
+    test_data = target_encoding(test_data, train_data, "x0", target, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1)
     expected_smoothing = .5
     expected_group_mean = 2
     expected_target_mean = 1.5
