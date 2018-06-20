@@ -87,7 +87,7 @@ for extracting, processing and interpreting features:
 
 
 
-## How to get it
+## **Installation **
 
 Binary installers for the latest released version are available at the [Python
 package index](https://pypi.org/project/feature-stuff) .
