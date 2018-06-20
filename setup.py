@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='feature_stuff',
     version='0.0.dev5',
-    description='Feature extraction, processing and interpretation algorithms and functions for machine learning and data science.',  
+    description='Feature extraction, processing and interpretation algorithms and functions for machine learning and data science.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/hiflyin/Advanced-Feature-Stuff-Lib',

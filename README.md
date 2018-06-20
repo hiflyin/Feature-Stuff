@@ -41,32 +41,32 @@ for extracting, processing and interpreting features:
 **Numeric feature extraction**
 <table>
 <tr>
-  <td>add_interactions</td>
+  <td>feature_stuff.add_interactions</td>
   <td>
     generic function for adding interaction features to a data frame either by passing them as a list or
         by passing a boosted trees model to extract the interactions from.
   </td>
 </tr>
 <tr>
-  <td>target_encoding</td>
+  <td>feature_stuff.target_encoding</td>
   <td>
 		target encoding of a feature column using exponential prior smoothing or mean prior smoothing
     </td>
 </tr>
 <tr>
-  <td>cv_target_encoding</td>
+  <td>feature_stuff.cv_target_encoding</td>
   <td>
     target encoding of a feature column taking cross-validation folds as input
 </td>
 </tr>
 <tr>
-  <td>add_knn_values</td>
+  <td>feature_stuff.add_knn_values</td>
   <td>
     creates a new feature with the K-nearest-neighbours of the values of a given feature
   </td>
 </tr>
 <tr>
-  <td>add_group_values</td>
+  <td>feature_stuff.model_features_insights_extractions.add_group_values</td>
   <td>
     generic and memory efficient enrichment of features dataframe with group values
   </td>
