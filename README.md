@@ -83,11 +83,11 @@ for extracting, processing and interpreting features:
   </td>
 </tr>
 <tr>
-</table
+</table>
 
 
 
-## **Installation **
+## Installation 
 
 Binary installers for the latest released version are available at the [Python
 package index](https://pypi.org/project/feature-stuff) .
