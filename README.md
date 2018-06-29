@@ -86,7 +86,6 @@ for extracting, processing and interpreting features:
 </table>
 
 
-
 ## Installation
 
 Binary installers for the latest released version are available at the [Python
@@ -126,9 +125,19 @@ pip install -e .
 
 ## How to use it
 
-< see the attached API of each function/ algorithm >
+Below are examples for some functions. See the attached API of each function/ algorithm, for a complete documentation.
 
-Example on extracting interactions form tree based models and adding
+# feature_stuff.add_interactions
+
+    Inputs:
+        df: a pandas dataframe
+        model: boosted trees model (currently xgboost supported only). Can be None in which case the interactions have to be provided
+        interactions: list in which each element is a list of features/columns in df, default: None
+
+    Output: df containing the group values added to it
+
+
+Example on extracting interactions from tree based models and adding
 them as new features to your dataset.
 
 ```python
@@ -165,6 +174,72 @@ print insights.get_xgboost_interactions(model)
 [['x0', 'x1']]
 
 ```
+
+# feature_stuff.target_encoding
+
+    Inputs:
+        df: a pandas dataframe containing the column for which to calculate target encoding (categ_col)
+        ref_df: a pandas dataframe containing the column for which to calculate target encoding and the target variable (y_col)
+            for example we might want to use train data as ref_df to encode test data
+        categ_col: the name of the categorical column for which to calculate target encoding
+        y_col: the name of the target column, or target variable to predict
+        smoothing_func: the name of the function to be used for calculating the weights of the corresponding target variable
+            value inside ref_df. Default: exponentialPriorSmoothing.
+        aggr_func: the statistic used to aggregate the target variable values inside each category of the categ_col
+        smoothing_prior_weight: a prior weight to put on each category. Default 1.
+
+    Output: df containing a new column called <categ_col + "_bayes_" + aggr_func> containing the encodings of categ_col
+
+Example on extracting target encodings from categorical features and adding them as new features to your dataset.
+
+```
+import feature_stuff as fs
+import pandas as pd
+
+train_data = pd.DataFrame({"x0":[0,1,0,1]})
+test_data = pd.DataFrame({"x0":[1, 0, 0, 1]})
+target = range(4)
+
+train_data = fs.target_encoding(train_data, train_data, "x0", target, smoothing_func=fs.exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1)
+test_data = fs.target_encoding(test_data, train_data, "x0", target, smoothing_func=fs.exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1)
+
+
+#train data with target encoding of "x0"
+print(train_data)
+   x0  y_xx  g_xx  x0_bayes_mean
+0   0     0     0       1.134471
+1   1     1     0       1.865529
+2   0     2     0       1.134471
+3   1     3     0       1.865529
+
+#test data with target encoding of "x0"
+print(test_data)
+   x0  x0_bayes_mean
+0   1       1.865529
+1   0       1.134471
+2   0       1.134471
+3   1       1.865529
+
+
+```
+
+# feature_stuff.cv_target_encoding
+
+    Inputs:
+        df: a pandas dataframe containing the column for which to calculate target encoding (categ_col) and the target variable (y_col)
+        categ_cols: a list or array with the the names of the categorical columns for which to calculate target encoding
+        y_col: a numpy array of the target variable to predict
+        cv_folds: a list with fold pairs as tuples of numpy arrays for cross-val target encoding
+        smoothing_func: the name of the function to be used for calculating the weights of the corresponding target variable
+            value inside ref_df. Default: exponentialPriorSmoothing.
+        aggr_func: the statistic used to aggregate the target variable values inside each category of the categ_col
+        smoothing_prior_weight: a prior weight to put on each category. Default 1.
+        verbosity: 0-none, 1-high_level, 2-detailed
+
+    Output: df containing a new column called <categ_col + "_bayes_" + aggr_func> containing the encodings of categ_col
+
+See feature_stuff.target_encoding example above.
+
 
 ## Contributing to feature-stuff
 

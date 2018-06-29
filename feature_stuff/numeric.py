@@ -97,6 +97,7 @@ def target_encoding(df, ref_df, categ_col, y_col, smoothing_func=exponentialPrio
     Inputs:
         df: a pandas dataframe containing the column for which to calculate target encoding (categ_col)
         ref_df: a pandas dataframe containing the column for which to calculate target encoding and the target variable (y_col)
+            for example we might want to use train data as ref_df to encode test data
         categ_col: the name of the categorical column for which to calculate target encoding
         y_col: the name of the target column, or target variable to predict
         smoothing_func: the name of the function to be used for calculating the weights of the corresponding target variable
@@ -131,7 +132,7 @@ def target_encoding(df, ref_df, categ_col, y_col, smoothing_func=exponentialPrio
     return(df)
 
 
-def cv_targetEncoding(df, categ_cols, y_col, cv_folds, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1, verbosity =0):
+def cv_target_encoding(df, categ_cols, y_col, cv_folds, smoothing_func=exponentialPriorSmoothing, aggr_func="mean", smoothing_prior_weight=1, verbosity =0):
     '''
     Inputs:
         df: a pandas dataframe containing the column for which to calculate target encoding (categ_col) and the target variable (y_col)
