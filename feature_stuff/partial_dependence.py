@@ -17,3 +17,18 @@ plt.xlabel('pickup month', color = "blue")
 plt.title("Average Probability of Buying a Car for a Given Pickup Month - Based on Curent Best Model", color = "red")
 plt.show()
 
+'''
+TO DO:
+
+get grid param and split - ig grid > unique values use values directly
+compute average of each grid segment
+for each such average compute values and  return
+add function to plot
+
+consider parwise vars:
+consider parallel for loop
+
+
+
+
+'''

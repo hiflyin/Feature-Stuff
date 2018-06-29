@@ -89,7 +89,7 @@ def _test_cv_targetEncoding():
     print train_data
     cv_folds = [(np.array([0,1]), np.array([2,3])), (np.array([2,3]), np.array([0,1]))]
 
-    train_data = cv_targetEncoding(train_data, ["x0"], target, cv_folds)
+    train_data = cv_target_encoding(train_data, ["x0"], target, cv_folds)
 
     print train_data.x0_bayes_mean.values.tolist()
     assert train_data.x0_bayes_mean.values.tolist()==[2.25, 2.75, 0.25, 0.75]
